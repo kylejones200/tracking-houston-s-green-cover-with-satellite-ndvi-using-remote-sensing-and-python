@@ -32,7 +32,7 @@ In practical terms, that's Band 8 minus Band 4 divided by their sum, using Senti
 Each frame tells us something. In January and February, Houston's vegetation is dormant --- patches of red dominate. But by March, things start to bloom. The city breathes. We see the parks come alive. Summer holds that greenery until late September. And then, the slow fade returns.
 
 ### What Makes NDVI So Useful?
-NDVI is a **quantitative** signal. Researchers it is typically used fo measure crop health and predict yield, detect deforestation and land conversion, and monitor urban greening initiatives.
+NDVI is a quantitative signal. Researchers it is typically used fo measure crop health and predict yield, detect deforestation and land conversion, and monitor urban greening initiatives.
 
 In a place like Houston --- where development pushes outward into low-density greenfield areas --- it's a tool for tracking what we often ignore: what we build over.
 
