@@ -25,7 +25,7 @@ def get_intervals(year):
     ]
 
 
-def main() -> None:
+def setup_paths() -> None:
     base_path = Path("results")
 
     frames_dir = base_path / "frames"
@@ -90,6 +90,8 @@ def main() -> None:
 
     print(f"\n✅ Saved comparison GIF: {gif_path}")
 
+
+def folder_with_your_nc_files() -> None:
     data_folder = Path("results")
 
     nc_files = sorted(data_folder.glob("ndvi_*.nc"))
@@ -125,6 +127,8 @@ def main() -> None:
 
     plt.show()
 
+
+def step_1_load_into_dataframe() -> None:
     df = pd.DataFrame({"date": dates, "ndvi": mean_ndvi})
 
     df["year"] = pd.DatetimeIndex(df["date"]).year
@@ -165,6 +169,8 @@ def main() -> None:
 
     plt.show()
 
+
+def notebook_step_004() -> None:
     print("Annual NDVI Comparison")
 
     print("2017 Mean:", pivot[2017].mean())
@@ -179,6 +185,8 @@ def main() -> None:
 
     print("2023:", (pivot[2023] > 0.3).sum(), "months")
 
+
+def notebook_step_005() -> None:
     ds_2017 = xr.open_dataset("results/ndvi_2017_06.nc")
 
     ds_2023 = xr.open_dataset("results/ndvi_2023_06.nc")
@@ -201,6 +209,8 @@ def main() -> None:
 
     print(f"Cohen's Kappa (NDVI Class Agreement, June): {kappa:.3f}")
 
+
+def plot_monthly_kappa_scores() -> None:
     base_dir = Path("results")
 
     kappas = []
@@ -243,6 +253,8 @@ def main() -> None:
 
     plt.show()
 
+
+def axis_labels_with_serif_font() -> None:
     fig, ax = plt.subplots(figsize=(10, 4))
 
     ax.plot(months, kappas, marker="o", color="black", linewidth=1)
@@ -267,6 +279,8 @@ def main() -> None:
 
     plt.show()
 
+
+def prepare_dataframe() -> None:
     df = pd.DataFrame({"date": dates, "ndvi": mean_ndvi})
 
     df["year"] = pd.DatetimeIndex(df["date"]).year
@@ -299,6 +313,17 @@ def main() -> None:
     plt.savefig("ndvi_monthly_comparison_2017_2023_minimalist.png", dpi=300)
 
     plt.show()
+
+
+def main() -> None:
+    setup_paths()
+    folder_with_your_nc_files()
+    step_1_load_into_dataframe()
+    notebook_step_004()
+    notebook_step_005()
+    plot_monthly_kappa_scores()
+    axis_labels_with_serif_font()
+    prepare_dataframe()
 
 
 if __name__ == "__main__":
