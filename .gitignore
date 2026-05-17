@@ -1,3 +1,14 @@
+# Project outputs
+outputs/data/*
+outputs/frames/*
+outputs/figures/*
+!outputs/**/.gitkeep
+
+# Legacy scratch downloads
+legacy/houston_tracts/
+legacy/houston_aqi/
+results/
+
 # Python
 __pycache__/
 *.pyc

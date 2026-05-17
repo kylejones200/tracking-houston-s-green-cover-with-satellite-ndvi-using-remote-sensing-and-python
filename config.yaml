@@ -1,0 +1,36 @@
+openeo:
+  endpoint: "openeo.dataspace.copernicus.eu"
+  collection: "SENTINEL2_L2A"
+  bands: ["B04", "B08"]
+  red_band: "B04"
+  nir_band: "B08"
+  out_format: "NetCDF"
+
+aoi:
+  # Downtown Houston: [west, south, east, north]
+  bbox: [-95.40, 29.70, -95.30, 29.80]
+
+analysis:
+  years: [2017, 2023]
+  compare_years: [2017, 2023]
+  ndvi_low: 0.1
+  ndvi_medium: 0.3
+  green_threshold: 0.3
+
+output:
+  data_dir: "outputs/data"
+  frames_dir: "outputs/frames"
+  figures_dir: "outputs/figures"
+
+gif:
+  duration_seconds: 1.0
+  cmap: "RdYlGn"
+  vmin: 0.0
+  vmax: 1.0
+  figsize: [12, 6]
+
+electrification:
+  state_fips: "48"
+  county_fips: "201"
+  tiger_year: 2023
+  acs_year: 2021
