@@ -17,7 +17,6 @@ def load_mean_ndvi_series(
 ) -> pd.DataFrame:
     """Build a DataFrame of mean NDVI and timestamps from NetCDF files."""
     records: list[dict[str, object]] = []
-
     for path in sorted(data_dir.glob(pattern)):
         with xr.open_dataset(path) as dataset:
             ndvi = dataset["var"].isel(t=0)

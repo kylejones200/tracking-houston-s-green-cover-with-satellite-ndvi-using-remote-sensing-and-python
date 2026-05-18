@@ -50,7 +50,6 @@ def plot_monthly_comparison(
 ) -> Path:
     """Plot month-by-month NDVI for each year in the pivot table."""
     fig, ax = plt.subplots(figsize=(10, 4 if minimalist else 6))
-
     if minimalist:
         for year in pivot.columns:
             ax.plot(pivot.index, pivot[year], linewidth=1, label=str(year))
@@ -83,7 +82,6 @@ def plot_ndvi_delta(
     """Plot the difference in monthly mean NDVI between two years."""
     year_new, year_old = years[1], years[0]
     delta = pivot[year_new] - pivot[year_old]
-
     fig, ax = plt.subplots(figsize=(10, 5))
     delta.plot(marker="o", color="darkred", ax=ax, title=f"NDVI Change ({year_new} – {year_old})")
     ax.axhline(0, color="gray", linestyle="--")
@@ -115,7 +113,6 @@ def plot_kappa_series(
     ax.set_xlabel("Month")
     ax.set_ylabel("Kappa Score")
     ax.grid(True)
-
     if minimalist:
         _minimal_axes(ax)
         title = "Cohen’s Kappa: Month vs Month NDVI Class Agreement (2017 vs 2023)"

@@ -50,7 +50,6 @@ def download_ndvi_interval(
         spatial_extent=spatial_extent,
         bands=[red_band, nir_band],
     ).ndvi(red=red_band, nir=nir_band)
-
     job = cube.create_job(title=job_title, out_format=out_format)
     job.start_and_wait()
     job.download_result(output_path)
@@ -67,7 +66,6 @@ def download_year(
     openeo_cfg = config["openeo"]
     spatial_extent = bbox_to_extent(config["aoi"]["bbox"])
     slices: list[tuple[str, xr.DataArray]] = []
-
     for index, (start, end) in enumerate(monthly_intervals(year), start=1):
         output_path = data_dir / f"ndvi_{year}_{index:02d}.nc"
         logger.info("Requesting NDVI for %s to %s -> %s", start, end, output_path.name)
@@ -97,7 +95,6 @@ def download_years(
     """Download NDVI for each year and return in-memory slices keyed by year."""
     data_dir.mkdir(parents=True, exist_ok=True)
     by_year: YearSlices = {}
-
     for year in years:
         logger.info("Processing year %s", year)
         by_year[year] = download_year(connection, year, config, data_dir)

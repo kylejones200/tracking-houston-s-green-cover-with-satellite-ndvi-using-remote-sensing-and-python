@@ -36,9 +36,7 @@ def configure_logging(verbose: bool) -> None:
     logging.basicConfig(level=level, format="%(asctime)s - %(levelname)s - %(message)s")
 
 
-def resolve_paths(
-    config: dict[str, Any], output_root: Path | None
-) -> tuple[Path, Path, Path]:
+def resolve_paths(config: dict[str, Any], output_root: Path | None) -> tuple[Path, Path, Path]:
     root = output_root or PROJECT_ROOT
     data_dir = root / config["output"]["data_dir"]
     frames_dir = root / config["output"]["frames_dir"]
@@ -62,9 +60,7 @@ def run_gif(config: dict[str, Any], data_dir: Path, frames_dir: Path) -> Path:
     return build_comparison_gif(slices, years, frames_dir, gif_path, config)
 
 
-def run_analyze(
-    config: dict[str, Any], data_dir: Path, figures_dir: Path, *, show: bool
-) -> None:
+def run_analyze(config: dict[str, Any], data_dir: Path, figures_dir: Path, *, show: bool) -> None:
     """Generate NDVI time-series and comparison figures."""
     frame = load_mean_ndvi_series(data_dir)
     if frame.empty:
@@ -73,7 +69,6 @@ def run_analyze(
     years = config["analysis"]["compare_years"]
     threshold = config["analysis"]["green_threshold"]
     pivot = pivot_monthly(frame)
-
     plot_ndvi_timeseries(frame, figures_dir / "ndvi_timeseries.png", show=show)
     plot_monthly_comparison(pivot, figures_dir / "ndvi_monthly_comparison.png", show=show)
     plot_monthly_comparison(
@@ -104,9 +99,7 @@ def run_analyze(
     )
 
 
-def run_kappa(
-    config: dict[str, Any], data_dir: Path, figures_dir: Path, *, show: bool
-) -> None:
+def run_kappa(config: dict[str, Any], data_dir: Path, figures_dir: Path, *, show: bool) -> None:
     """Compute and plot Cohen's kappa for vegetation class agreement."""
     years = config["analysis"]["compare_years"]
     if len(years) < 2:
@@ -155,12 +148,10 @@ def main() -> None:
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     args = parser.parse_args()
-
     configure_logging(args.verbose)
     config = load_config(args.config)
     ensure_output_dirs()
     data_dir, frames_dir, figures_dir = resolve_paths(config, args.output_dir)
-
     if args.command == "fetch":
         run_fetch(config, data_dir)
     elif args.command == "gif":

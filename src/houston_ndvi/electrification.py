@@ -34,8 +34,7 @@ def _download_zip(url: str, extract_dir: Path) -> None:
 def load_houston_tracts(tiger_year: int, cache_dir: Path) -> gpd.GeoDataFrame:
     """Download and load Harris County census tracts."""
     url = (
-        f"https://www2.census.gov/geo/tiger/TIGER{tiger_year}/TRACT/"
-        f"tl_{tiger_year}_48201_tract.zip"
+        f"https://www2.census.gov/geo/tiger/TIGER{tiger_year}/TRACT/tl_{tiger_year}_48201_tract.zip"
     )
     extract_dir = cache_dir / f"tiger_tracts_{tiger_year}"
     _download_zip(url, extract_dir)
@@ -58,9 +57,7 @@ def load_acs_tract_data(state_fips: str, county_fips: str, acs_year: int) -> pd.
         columns=["population", "median_income", "state", "county", "tract"],
     )
     frame["GEOID"] = frame["state"] + frame["county"] + frame["tract"]
-    frame[["population", "median_income"]] = frame[["population", "median_income"]].astype(
-        float
-    )
+    frame[["population", "median_income"]] = frame[["population", "median_income"]].astype(float)
     return frame
 
 
@@ -87,17 +84,13 @@ def run_electrification_analysis(
     elec_cfg = config["electrification"]
     state = elec_cfg["state_fips"]
     county = elec_cfg["county_fips"]
-
     tracts = load_houston_tracts(elec_cfg["tiger_year"], cache_dir)
     acs = load_acs_tract_data(state, county, elec_cfg["acs_year"])
     tracts = tracts.merge(acs[["GEOID", "population", "median_income"]], on="GEOID")
-
     tracts["area_sq_miles"] = tracts.geometry.to_crs({"proj": "aea"}).area / 2.59e6
     tracts["pop_density"] = tracts["population"] / tracts["area_sq_miles"]
-
     pollution = load_air_quality_stations(cache_dir).to_crs(tracts.crs)
     tracts["asthma_rate"] = np.random.default_rng(42).uniform(5, 15, size=len(tracts))
-
     _plot_choropleth(
         tracts,
         column="pop_density",
@@ -112,25 +105,19 @@ def run_electrification_analysis(
         output=figure_path("houston_pollution_stations.png"),
         show=show,
     )
-
     tracts = gpd.sjoin_nearest(
         tracts,
         pollution[["geometry"]],
         how="left",
         distance_col="pollution_distance",
     )
-
     weights = Queen.from_dataframe(tracts)
     weights.transform = "r"
     moran = Moran(tracts["pop_density"], weights)
     logger.info("Moran's I: %.3f, p-value: %.4f", moran.I, moran.p_norm)
-
     tracts["priority_score"] = (
-        tracts["pop_density"]
-        * (1 / tracts["median_income"])
-        * tracts["asthma_rate"]
+        tracts["pop_density"] * (1 / tracts["median_income"]) * tracts["asthma_rate"]
     )
-
     _plot_choropleth(
         tracts,
         column="priority_score",

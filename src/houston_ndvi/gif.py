@@ -52,7 +52,6 @@ def build_comparison_gif(
     """Render monthly frames and assemble a side-by-side comparison GIF."""
     gif_cfg = config["gif"]
     frames: list = []
-
     for month_index in range(12):
         frame_path = frames_dir / f"frame_{month_index:03d}.png"
         render_comparison_frame(

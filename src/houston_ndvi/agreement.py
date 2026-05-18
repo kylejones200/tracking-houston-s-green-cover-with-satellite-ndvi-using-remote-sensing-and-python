@@ -34,7 +34,6 @@ def monthly_kappa_series(
     """Compute monthly kappa scores between two years of NetCDF files."""
     year_a, year_b = years
     records: list[dict[str, float | int]] = []
-
     for month in range(1, 13):
         path_a = data_dir / f"ndvi_{year_a}_{month:02d}.nc"
         path_b = data_dir / f"ndvi_{year_b}_{month:02d}.nc"

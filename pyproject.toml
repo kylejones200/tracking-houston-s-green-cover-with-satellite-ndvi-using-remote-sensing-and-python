@@ -6,6 +6,7 @@ readme = "README.md"
 license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
+    "pydantic>=2.10.0",
     "censusdata>=1.15.post1",
     "contextily>=1.7.0",
     "esda>=2.9.0",
